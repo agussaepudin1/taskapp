@@ -2,22 +2,38 @@
 
 namespace App\Controllers;
 
-//use App\Entities\Task;
+//use \App\Entities\Signup;
 
 class Signup extends BaseController
 {
-    //private $model;
-
-    public function __construct()
+    public function new()
     {
-        //$this->model = new \App\Models\TaskModel;
+        //$signup = new Signup;
+
+        return view('Signup/new');
     }
 
-    public function index()
+    public function create()
     {
-        //$data = $this->model->findAll();
+        $user = new \App\Entities\User($this->request->getPost());
 
-        return view('Signup/index');
-        //return view('Login/index', ['tasks' => $data]);
+        $model = new \App\Models\UserModel;
+
+        if ($model->insert($user)){
+            return redirect()->to("/signup/success");
+        }
+        else{
+            return redirect()->back()
+                             ->with('errors',$model->errors())
+                             ->with('warning', 'Invalid data')
+                             ->withInput();
+        }
+    }
+
+    public function success()
+    {
+        return view('Signup/success');
     }
 }
+
+?>

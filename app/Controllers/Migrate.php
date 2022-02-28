@@ -8,11 +8,15 @@ class Migrate extends BaseController
     {
         $migrate = \Config\Services::migrations();
 
-        try {
+        try{
+            
             $migrate->latest();
-            echo "migrated";
-        } catch(\Exception $e) {
+            echo "Migrated";
+
+        } catch (\Exception $e){
+
             echo $e->getMessage();
+
         }
     }
 }

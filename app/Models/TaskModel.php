@@ -3,7 +3,6 @@
 namespace App\Models;
 
 class TaskModel extends \CodeIgniter\Model
-
 {
     protected $table = 'task';
 
@@ -13,12 +12,12 @@ class TaskModel extends \CodeIgniter\Model
 
     protected $useTimestamps = true;
 
-    protected $validationRules =[
-        'description'=> 'required'
+    protected $validationRules = [
+        'description' => 'required'
     ];
 
-    protected $validationMessages =[
-        'description'=> [
+    protected $validationMessages = [
+        'description' => [
             'required' => 'Please enter a description'
         ]
     ];

@@ -1,12 +1,13 @@
-<?= $this->extend("layouts/tasks") ?>
+<?= $this->extend("layouts/default") ?>
 
-<?= $this->section("title") ?>Task<?= $this->endSection() ?>
+<?= $this->section("title") ?>New Task<?= $this->endSection() ?>
 
 <?= $this->section("content") ?>
+    
+    <h1>New Task</h1>
 
-    <h1> New task</h1>
-
-    <?php if(session()->has('errors')): ?>
+    <?php if (session()->has('errors')): ?>
+    
         <ul>
             <?php foreach(session('errors') as $error): ?>
                 <li><?= $error ?></li>
@@ -16,10 +17,11 @@
 
     <?= form_open("/tasks/create") ?>
 
-    <?=  $this->include('Tasks/form') ?>
+        <?= $this->include('Tasks/form') ?>
 
-    <button>Save</button>
-    <a href="<?= site_url("/tasks") ?>">Cancel</a>
+        <button>Save</button>
+        <a href="<?= site_url("/tasks") ?>">Cancel</a>
 
     </form>
+
 <?= $this->endSection() ?>

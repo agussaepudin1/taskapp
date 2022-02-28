@@ -1,8 +1,7 @@
 <?php
 
 namespace App\Entities;
-
-class Task extends \CodeIgniter\Entity
+class task extends \CodeIgniter\Entity
 {
-    
+
 }

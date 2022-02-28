@@ -2,22 +2,50 @@
 
 namespace App\Controllers;
 
-//use App\Entities\Task;
+//use \App\Entities\Signup;
 
 class Login extends BaseController
 {
-    //private $model;
-
-    public function __construct()
+    public function new()
     {
-        //$this->model = new \App\Models\TaskModel;
+        //$signup = new Signup;
+
+        return view('Login/new');
     }
 
-    public function index()
+    public function create()
     {
-        //$data = $this->model->findAll();
+        $email = $this->request->getPost('email');
+        $password = $this->request->getPost('password');
 
-        return view('Login/index');
-        //return view('Login/index', ['tasks' => $data]);
+        $auth = new \App\Libraries\Authentication;
+
+        if ($auth->login($email, $password)) {
+            return redirect()->to("/")
+                                 ->with('info','Login successful');
+        }
+        else{
+            return redirect()->back() 
+                             ->withInput()
+                             ->with('warning', 'Invalid login');
+        }
+        
+    }
+
+    public function delete()
+    {
+        $auth = new \App\Libraries\Authentication;
+
+        $auth->logout();
+
+        return redirect()->to('/login/showLogoutMessage');
+    }
+
+    public function showLogoutMessage()
+    {
+        return redirect()->to("/")
+                         ->with('info','Logout successful');
     }
 }
+
+?>

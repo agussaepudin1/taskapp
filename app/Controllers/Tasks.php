@@ -2,10 +2,12 @@
 
 namespace App\Controllers;
 
-use App\Entities\Task;
+use \App\Entities\Task;
+
 
 class Tasks extends BaseController
 {
+
     private $model;
 
     public function __construct()
@@ -17,23 +19,26 @@ class Tasks extends BaseController
     {
         $data = $this->model->findAll();
 
-        return view('Tasks/index', ['tasks' => $data]);
+        //dd($data);
+        
+        return view('Tasks/index' , [
+            'tasks' => $data
+        ]);
     }
 
     public function show($id)
     {
         $task = $this->getTaskOr404($id);
 
-        //dd($task);
-        return view('Tasks/show', [
+        return view('Tasks/show' , [
             'task' => $task
         ]);
     }
 
     public function new()
     {
-
         $task = new Task;
+
         return view('Tasks/new',[
             'task' => $task
         ]);
@@ -43,26 +48,23 @@ class Tasks extends BaseController
     {
         $task = new Task($this->request->getPost());
 
-        if($this->model->insert($task)){
+        if( $this->model->insert($task) ){
             return redirect()->to("/tasks/show/{$this->model->insertID}")
-                             ->with('info', 'Task created succcessfully');
-        }
-        else{
+                             ->with('info','Task created successfully');
+        } else{
+
             return redirect()->back()
-                             ->with('errors',$this->model->errors())
-                             ->with('warning', 'Invalid data')
+                             ->with('errors', $this->model->errors())
+                             ->with('warning','Invalid Data')
                              ->withInput();
         }
-
-        
     }
 
     public function edit($id)
     {
         $task = $this->getTaskOr404($id);
 
-        //dd($task);
-        return view('Tasks/edit', [
+        return view('Tasks/edit' , [
             'task' => $task
         ]);
     }
@@ -70,40 +72,40 @@ class Tasks extends BaseController
     public function update($id)
     {
         $task = $this->getTaskOr404($id);
+
         $task->fill($this->request->getPost());
 
-        if( ! $task->hasChanged()){
+        if( ! $task->hasChanged()) {
             return redirect()->back()
                              ->with('warning', 'Nothing to update')
                              ->withInput();
         }
 
-        if($this->model->save($task)){
+        if ($this->model->save($task)) {
             return redirect()->to("/tasks/show/$id")
-                            ->with('info', 'Task updated succcessfully');
+                            ->with('info','Task updated successfully');
         }
         else{
             return redirect()->back()
-                             ->with('errors',$this->model->errors())
-                             ->with('warning', 'Invalid data')
+                             ->with('errors', $this->model->errors())
+                             ->with('warning','Invalid Data')
                              ->withInput();
-        }           
-
-        
+        }
     }
 
     public function delete($id)
     {
         $task = $this->getTaskOr404($id);
 
-        if($this->request->getMethod() === 'post'){
+        if ($this->request->getMethod() === 'post') {
+
             $this->model->delete($id);
 
             return redirect()->to('/tasks')
                              ->with('info','Task Deleted');
         }
 
-        return view('Tasks/delete', [
+        return view('Tasks/delete' , [
             'task' => $task
         ]);
     }
@@ -112,10 +114,11 @@ class Tasks extends BaseController
     {
         $task = $this->model->find($id);
 
-        if ($task === null){
+        if($task === null){
             throw new \CodeIgniter\Exceptions\PageNotFoundException("Task with id $id not found");
         }
 
         return $task;
+
     }
 }
