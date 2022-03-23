@@ -18,10 +18,15 @@ class Login extends BaseController
         $email = $this->request->getPost('email');
         $password = $this->request->getPost('password');
 
-        $auth = new \App\Libraries\Authentication;
+        $auth = service('auth');
 
         if ($auth->login($email, $password)) {
-            return redirect()->to("/")
+
+            $redirect_url = session('redirect_url') ?? '/';
+
+            unset($_SESSION['redirect_url']);
+
+            return redirect()->to($redirect_url)
                                  ->with('info','Login successful');
         }
         else{
@@ -34,9 +39,7 @@ class Login extends BaseController
 
     public function delete()
     {
-        $auth = new \App\Libraries\Authentication;
-
-        $auth->logout();
+        service('auth')->logout();
 
         return redirect()->to('/login/showLogoutMessage');
     }

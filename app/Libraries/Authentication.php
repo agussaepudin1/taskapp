@@ -4,19 +4,20 @@ namespace App\Libraries;
 
 class Authentication
 {
+    private $user;
+
     public function login($email, $password)
     {
         $model = new \App\Models\UserModel;
 
-        $user = $model->where('email', $email)
-                      ->first();
+        $user = $model->findByEmail($email);
 
 
         if ($user === null){
             return false;
         }
         
-        if ( ! password_verify($password, $user->password_hash)){
+        if ( ! $user->verifyPassword($password)){
                 
             return false;
         }
@@ -35,13 +36,23 @@ class Authentication
 
     public function getCurrentUser()
     {
-        if (! session()->has('user_id')){
+        if (! $this->isLoggedIn()){
             return null;
         }
 
-        $model = new \App\Models\UserModel;
+        if ($this->user === null) {
 
-        return $model->find(session()->get('user_id'));
+            $model = new \App\Models\UserModel;
+
+            $this->user = $model->find(session()->get('user_id'));
+        }
+
+        return $this->user;
+    }
+
+    public function isLoggedIn()
+    {
+        return session()->has('user_id');
     }
 }
 ?>

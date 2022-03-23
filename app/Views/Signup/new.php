@@ -37,8 +37,8 @@
             <input type="password" name="password_confirmation">
         </div>
 
-        <button>Save</button>
-        <a href="<?= site_url("/tasks") ?>">Cancel</a>
+        <button>Signup</button>
+        <a href="<?= site_url("/") ?>">Cancel</a>
 
     </form>
 

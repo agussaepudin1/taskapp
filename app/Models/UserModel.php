@@ -42,13 +42,9 @@ class UserModel extends \CodeIgniter\Model
         return $data;
     }
 
-    // protected $validationRules = [
-    //     'name' => 'required'
-    // ];
-
-    // protected $validationMessages = [
-    //     'name' => [
-    //         'required' => 'Please enter a name'
-    //     ]
-    // ];
+    public function findByEmail($email)
+    {
+        return $this->where('email', $email)
+                    ->first();
+    }
 }
